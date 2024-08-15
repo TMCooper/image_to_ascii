@@ -3,11 +3,9 @@ from PIL import ImageEnhance
 import glob
 import os
 
-PATH = os.path.dirname(os.path.abspath(__file__))
-PATH_IMAGES =  os.path.join(PATH, "Ascii_Images")
-
 EXTENTION = ".html"
 NAME_AD = "_ascii"
+IMAGES_EXTENTIONS = ['*.jpg', '*.jpeg', '*.png']
 
 def main():
     choix = input("Voulez vous votre images en noir et blanc ou couleur ? (NB/C) : ")
@@ -50,75 +48,118 @@ def main():
 
                         images = os.path.join(PATH_IMAGES_C, file_just_name + NAME_AD + EXTENTION)
                         ascii.to_html_file(images, columns=200, width_ratio=2)
-                        print("Tache Termine !")
+                        print("Enregistrement effectuer !")
             
-            if choix in ["N", "n"]:
+            if choix in ["N", "n", "Y", "y"]:
                 print("Tache termine !")
         
         if choix in ["C", "c"]:
-            ascii = AsciiArt.from_image(f'{PATH_C}/Rias_Gremory.jpg')
-            ascii.to_terminal()
-            choix = input("Voulez vous save l'images ? Y/N : ")
+            PATH_IMAGES_C = os.path.join(PATH_C, "Ascii_Images")
+
+            choix = input("Voulez vous save la/les image(s) ? Y/N : ")
 
             while choix not in["Y", "y", "N", "n"]:
                 choix = input("Veulliez saisir Y ou N : ")
-
-            if choix in ["Y", "y"]:
-                name_images = input("Quel est le nom de votre images ? : ")
-
-                if not os.path.exists(PATH_IMAGES_C):
-                    os.mkdir(PATH_IMAGES_C)
-
-                images = os.path.join(PATH_IMAGES, name_images + EXTENTION)
-                ascii.to_html_file(images, columns=200, width_ratio=2)
-                print("Tache Termine !")
             
-            if choix in ["N", "n"]:
+            images_path = glob.glob(os.path.join(PATH_C,'*.*'))
+
+            if not images_path:
+                print("Aucun Fichier trouvé dans le dossier sources.")
+
+            else:
+                print("Fichier Troués :")
+                for PATH_C in images_path:
+                    file_name = os.path.basename(PATH_C)
+                    print(file_name)
+                    file_just_name, file_ext = os.path.splitext(file_name)
+
+                    ascii = AsciiArt.from_image(f'{PATH_C}')
+                    ascii.to_terminal()
+
+                    if choix in ["Y", "y"]:
+                        if not os.path.exists(PATH_IMAGES_C):
+                            os.mkdir(PATH_IMAGES_C)
+
+                        images = os.path.join(PATH_IMAGES_C, file_just_name + NAME_AD + EXTENTION)
+                        ascii.to_html_file(images, columns=200, width_ratio=2)
+                        print("Enregistrement effectuer !")
+            
+            if choix in ["N", "n", "Y", "y"]:
                 print("Tache termine !")
-    
+
     if PATH_C in ["N", "n"]:
+        PATH = os.path.dirname(os.path.abspath(__file__))
+        PATH_IMAGES =  os.path.join(PATH, "Ascii_Images")
+        images_path = []
+        
         if choix in ["C", "c"]:
-            print(PATH)
-            ascii = AsciiArt.from_image(f'{PATH}/Rias_Gremory.jpg')
-            ascii.to_terminal()
-            choix = input("Voulez vous save l'images ? Y/N : ")
+            choix = input("Voulez vous save la/les image(s) ? Y/N : ")
 
             while choix not in["Y", "y", "N", "n"]:
                 choix = input("Veulliez saisir Y ou N : ")
 
-            if choix in ["Y", "y"]:
-                name_images = input("Quel est le nom de votre images ? : ")
+            for extension in IMAGES_EXTENTIONS:
 
-                if not os.path.exists(PATH_IMAGES):
-                    os.mkdir(PATH_IMAGES)
-
-                images = os.path.join(PATH_IMAGES, name_images + EXTENTION)
-                ascii.to_html_file(images, columns=200, width_ratio=2)
-                # {os.path.join(PATH_IMAGES,'%(name_images)s.%(ext)s')}
-                print("Tache Termine !")
+                pattern = os.path.join(PATH, extension)
+                images_found = glob.glob(pattern)
+                images_path.extend(images_found)
             
+            if not images_path:
+                print("Aucun fichier image trouvé dans le dossier spécifié.")
+
+            else:
+                for PATH in images_path:
+                    file_name = os.path.basename(PATH)  # Nom du fichier avec extension
+                    file_just_name, file_ext = os.path.splitext(file_name)
+                    
+                    print(f'Fichier Trouvé : {file_name}')
+                    ascii = AsciiArt.from_image(f'{PATH}')
+                    ascii.to_terminal()
+
+                    if choix in ["Y", "y"]:
+                        if not os.path.exists(PATH_IMAGES):
+                            os.mkdir(PATH_IMAGES)
+                        
+                        images = os.path.join(PATH_IMAGES, file_just_name + NAME_AD + EXTENTION)
+                        ascii.to_html_file(images, columns=200, width_ratio=2)
+                        print("Eregistrement effectuer !")
+
             if choix in ["N", "n"]:
                 print("Tache termine !")
-
+        
         if choix in ["NB", "nb"]:
-            ascii = AsciiArt.from_image(f'{PATH}/Rias_Gremory.jpg')
-            ascii.image = ImageEnhance.Brightness(ascii.image).enhance(0.2)
-            ascii.to_terminal()
-            choix = input("Voulez vous save l'images ? Y/N : ")
-            
+            choix = input("Voulez vous save la/les image(s) ? Y/N : ")
+
             while choix not in["Y", "y", "N", "n"]:
                 choix = input("Veulliez saisir Y ou N : ")
+
+            for extension in IMAGES_EXTENTIONS:
+
+                pattern = os.path.join(PATH, extension)
+                images_found = glob.glob(pattern)
+                images_path.extend(images_found)
             
-            if choix in ["Y", "y"]:
-                name_images = input("Quel est le nom de votre images ? : ")
+            if not images_path:
+                print("Aucun fichier image trouvé dans le dossier spécifié.")
 
-                if not os.path.exists(PATH_IMAGES):
-                    os.mkdir(PATH_IMAGES)
+            else:
+                for PATH in images_path:
+                    file_name = os.path.basename(PATH)  # Nom du fichier avec extension
+                    file_just_name, file_ext = os.path.splitext(file_name)
+                    
+                    print(f'Fichier Trouvé : {file_name}')
+                    ascii = AsciiArt.from_image(f'{PATH}')
+                    ascii.image = ImageEnhance.Brightness(ascii.image).enhance(0.2)
+                    ascii.to_terminal()
 
-                ascii.image = ImageEnhance.Brightness(ascii.image).enhance(0.2)
-                images = os.path.join(PATH_IMAGES, name_images + EXTENTION)
-                ascii.to_html_file(images, columns=200, width_ratio=2)
-                print("Tache Termine !")
+                    if choix in ["Y", "y"]:
+                        if not os.path.exists(PATH_IMAGES):
+                            os.mkdir(PATH_IMAGES)
+                        
+                        ascii.image = ImageEnhance.Brightness(ascii.image).enhance(0.2)
+                        images = os.path.join(PATH_IMAGES, file_just_name + NAME_AD + EXTENTION)
+                        ascii.to_html_file(images, columns=200, width_ratio=2)
+                        print("Eregistrement effectuer !")
         
             if choix in ["N", "n"]:
                 print("Tache termine !")
