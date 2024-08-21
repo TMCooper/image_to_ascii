@@ -8,26 +8,24 @@ NAME_AD = "_ascii"
 IMAGES_EXTENTIONS = ['*.jpg', '*.jpeg', '*.png']
 
 def main():
-    choix = input("Voulez vous votre images en noir et blanc ou couleur ? (NB/C) : ")
+    choix = input("Voulez vous votre images en noir et blanc ou couleur ? (NB/C) : ").lower()
     print("si vous marquer N c'est le dossier ou le programme est situer que les images vont être enregistré\n si vous avez une images en particullier vous pouvez aussi la mettre dirrectement")
     PATH_C = input("quelle est votre sources ? : ")
 
-    while choix not in ["NB", "nb", "C", "c"]:
-            choix = input("Veulliez saisir C/NB : ")
+    while choix not in ["nb", "c"]:
+            choix = input("Veulliez saisir C/NB : ").lower()
 
     if PATH_C not in ["N", "n"]:
         PATH_IMAGES_C = os.path.join(PATH_C, "Ascii_Images")
 
-        if choix in ["NB", "nb"]:
+        if choix in ["nb"]:
             
-            choix = input("Voulez vous save la/les image(s) ? Y/N : ")
+            choix = input("Voulez vous save la/les image(s) ? Y/N : ").lower()
 
-            while choix not in["Y", "y", "N", "n"]:
-                choix = input("Veulliez saisir Y ou N : ")
+            while choix not in["y", "n"]:
+                choix = input("Veulliez saisir Y ou N : ").lower()
 
             images_path = glob.glob(os.path.join(PATH_C,'*.*'))
-            # print(f'images : {images_path}')
-
             if not images_path:
                     print("Aucun fichier trouvé dans le dossier sources.")
             else:
@@ -50,16 +48,16 @@ def main():
                         ascii.to_html_file(images, columns=200, width_ratio=2)
                         print("Enregistrement effectuer !")
             
-            if choix in ["N", "n", "Y", "y"]:
+            if choix in ["n", "y"]:
                 print("Tache termine !")
         
-        if choix in ["C", "c"]:
+        if choix in ["c"]:
             PATH_IMAGES_C = os.path.join(PATH_C, "Ascii_Images")
 
-            choix = input("Voulez vous save la/les image(s) ? Y/N : ")
+            choix = input("Voulez vous save la/les image(s) ? Y/N : ").lower()
 
-            while choix not in["Y", "y", "N", "n"]:
-                choix = input("Veulliez saisir Y ou N : ")
+            while choix not in["y", "n"]:
+                choix = input("Veulliez saisir Y ou N : ").lower()
             
             images_path = glob.glob(os.path.join(PATH_C,'*.*'))
 
@@ -84,7 +82,7 @@ def main():
                         ascii.to_html_file(images, columns=200, width_ratio=2)
                         print("Enregistrement effectuer !")
             
-            if choix in ["N", "n", "Y", "y"]:
+            if choix in ["n", "y"]:
                 print("Tache termine !")
 
     if PATH_C in ["N", "n"]:
@@ -92,11 +90,11 @@ def main():
         PATH_IMAGES =  os.path.join(PATH, "Ascii_Images")
         images_path = []
         
-        if choix in ["C", "c"]:
-            choix = input("Voulez vous save la/les image(s) ? Y/N : ")
+        if choix in ["c"]:
+            choix = input("Voulez vous save la/les image(s) ? Y/N : ").lower()
 
-            while choix not in["Y", "y", "N", "n"]:
-                choix = input("Veulliez saisir Y ou N : ")
+            while choix not in["y", "n"]:
+                choix = input("Veulliez saisir Y ou N : ").lower()
 
             for extension in IMAGES_EXTENTIONS:
 
@@ -116,7 +114,7 @@ def main():
                     ascii = AsciiArt.from_image(f'{PATH}')
                     ascii.to_terminal()
 
-                    if choix in ["Y", "y"]:
+                    if choix in ["y"]:
                         if not os.path.exists(PATH_IMAGES):
                             os.mkdir(PATH_IMAGES)
                         
@@ -128,10 +126,10 @@ def main():
                 print("Tache termine !")
         
         if choix in ["NB", "nb"]:
-            choix = input("Voulez vous save la/les image(s) ? Y/N : ")
+            choix = input("Voulez vous save la/les image(s) ? Y/N : ").lower()
 
-            while choix not in["Y", "y", "N", "n"]:
-                choix = input("Veulliez saisir Y ou N : ")
+            while choix not in["y", "n"]:
+                choix = input("Veulliez saisir Y ou N : ").lower()
 
             for extension in IMAGES_EXTENTIONS:
 
@@ -161,7 +159,7 @@ def main():
                         ascii.to_html_file(images, columns=200, width_ratio=2)
                         print("Eregistrement effectuer !")
         
-            if choix in ["N", "n"]:
+            if choix in ["n"]:
                 print("Tache termine !")
 
 if __name__ == "__main__":
